@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  password  String
+  firstName String
+  lastName  String
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  schedules Schedule[]
+}
+
+model Barber {
+  id        String   @id @default(uuid())
+  fullName  String
+  photoUrl  String   @default("https://image.similarpng.com/very-thumbnail/2021/08/Barber-shop-logo-on-transparent-background-PNG.png")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  schedules Schedule[]
+}
+
+model Schedule {
+  id          String  @id @default(uuid())
+  scheduledAt DateTime
+  barber      Barber @relation(fields: [barberId], references: [id])
+  barberId    String
+  user        User @relation(fields: [userId], references: [id])
+  userId      String
+}
+
+generator dbml {
+  provider = "prisma-dbml-generator"
+}

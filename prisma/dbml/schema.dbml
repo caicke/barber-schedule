@@ -1,0 +1,36 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id String [pk]
+  password String [not null]
+  firstName String [not null]
+  lastName String [not null]
+  email String [unique, not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  schedules Schedule [not null]
+}
+
+Table Barber {
+  id String [pk]
+  fullName String [not null]
+  photoUrl String [not null, default: 'https://image.similarpng.com/very-thumbnail/2021/08/Barber-shop-logo-on-transparent-background-PNG.png']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  schedules Schedule [not null]
+}
+
+Table Schedule {
+  id String [pk]
+  scheduledAt DateTime [not null]
+  barber Barber [not null]
+  barberId String [not null]
+  user User [not null]
+  userId String [not null]
+}
+
+Ref: Schedule.barberId > Barber.id
+
+Ref: Schedule.userId > User.id
